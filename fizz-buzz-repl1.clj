@@ -82,45 +82,38 @@
 
 (fiz-buzz-numbers a-vec transformations)
 
+;; Resulting version of fizz-buzz
+(defn fizz-buzz [coll]
+  (let [is-multiple-of? (fn [num n]
+                          (= 0 (rem n num)))
 
-(defn fizz1 [n s]
-  [n (if (is-multiple-of-3? n)
-       (str s "Fizz")
-       s)])
+        is-multiple-of-3? (partial is-multiple-of? 3)
 
-(fizz1 3 "")
+        is-multiple-of-5? (partial is-multiple-of? 5)
 
-(defn buzz1 [[n s]]
-  [n (if (is-multiple-of-5? n)
-       (str s "Buzz")
-       s)])
+        fizz (fn [n s]
+               (if (is-multiple-of-3? n)
+                 (str s "Fizz")
+                 s))
 
-(buzz1 [5 ""])
+        buzz (fn [n s]
+               (if (is-multiple-of-5? n)
+                 (str s "Buzz")
+                 s))
 
-(defn empty-str-to-number1 [[n s]]
-  (if (= s "") (str n) s))
+        empty-str-to-number (fn [n s]
+                              (if (= s "")
+                                (str n)
+                                s))
 
+        transformations (list fizz buzz empty-str-to-number)
 
-(def t (reduce comp (reverse [fizz1 buzz1 empty-str-to-number1])))
-
-(t 1 "")
-(t 3 "")
-(t 5 "")
-(t 15 "")
-
-(map t a-vec (repeat (count a-vec) ""))
-
-(defn fizz2 [[n s]]
-  [n (if (is-multiple-of-3? n)
-       (str s "Fizz")
-       s)])
-
-(fizz2 [3 ""])
-
-(def t2 (reduce comp (reverse [fizz2 buzz1 empty-str-to-number1])))
-
-(for [n a-vec s [""]] [n s])
-
-(map t2 (for [n a-vec s [""]] [n s]))
-
-
+        transform (fn [functions numbers result]
+                    (if (empty? functions)
+                      result
+                      (recur (rest functions)
+                             numbers
+                             (map (first functions) numbers result))))]
+    (clojure.string/join
+     \space
+     (transform transformations coll (repeat (count coll) "")))))
