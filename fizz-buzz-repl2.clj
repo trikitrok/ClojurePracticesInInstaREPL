@@ -77,6 +77,7 @@
     (clojure.string/join
      \space
      (map
-      (reduce comp (reverse [fizz buzz empty-str-to-number]))
+      (reduce comp (reverse transformations))
       (for [n coll s [""]] [n s])))))
 
+(fizz-buzz a-vec)
