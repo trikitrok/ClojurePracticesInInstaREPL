@@ -223,16 +223,18 @@
 
 (map #(.getName %) (.listFiles (File. ".")))
 
-(count (file-seq (File. ".")))
+(count (file-seq (File. "/media/trikitrok/0d7e8f3c-a84a-4aec-9319-054a8b4d873f/MisCosas/Documentos/Clojure/0_MiClojure/ClojurePractices")))
 
 (defn minutes-to-millis [mins]
   (* mins 1000 60))
 
 (defn recently-modified? [file]
   (> (.lastModified file)
-     (- (System/currentTimeMillis) (minutes-to-millis 30))))
+     (- (System/currentTimeMillis) (minutes-to-millis 60))))
 
-(filter recently-modified? (file-seq (File. ".")))
+ (file-seq (File. "/media/trikitrok/0d7e8f3c-a84a-4aec-9319-054a8b4d873f/MisCosas/Documentos/Clojure/0_MiClojure/ClojurePractices"))
+
+(filter recently-modified? (file-seq (File. "/media/trikitrok/0d7e8f3c-a84a-4aec-9319-054a8b4d873f/MisCosas/Documentos/Clojure/0_MiClojure/ClojurePractices")))
 
 
 
