@@ -68,8 +68,13 @@
       (make Point 1 3)
       (make Point 3 1))
 
-(defn equal-triangles? [& triangles]
-  (apply = triangles))
+;; (defn equal-triangles? [& triangles]
+;;   (apply = triangles))
+
+(def equal-triangles? =)
+;; In Clojure, there's no distinction between "pointer equality" and
+;; "content equality". (If you think about it, the substitution rule
+;; for function evaluation demands that.)
 
 (def triangle (make Triangle
       (make Point 1 2)
@@ -93,8 +98,10 @@
 (equal-triangles? triangle different-triangle equal-triangle)
 (equal-triangles? triangle triangle equal-triangle)
 
-(defn valid-triangle? [p1 p2 p3]
-  (= 3 (count (distinct [p1 p2 p3]))))
+(defn valid-triangle? [& points]
+  (and
+   (= 3 (count points))
+   (= points (distinct points))))
 
 (valid-triangle?
  (make Point 1 2)

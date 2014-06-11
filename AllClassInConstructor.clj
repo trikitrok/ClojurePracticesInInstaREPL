@@ -25,13 +25,14 @@
 (send-to a-point :shift 1 2)
 
 (defn Point [x y]
-  {:_x x
-   :_y y
+  {
+   :x x
+   :y y
    :__class_symbol__ 'Point
    :__methods__ {
-                 :x (fn [this] (:_x this))
+                 :x :x
 
-                 :y (fn [this] (:_y this))
+                 :y :y
 
                  :shift (fn [this dx dy]
                           (make Point
