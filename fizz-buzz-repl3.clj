@@ -35,10 +35,10 @@
 (clojure.string/join
  " "
  (take 100
-(map #(clojure.string/replace (str %1 %2) #"^$" (str %3))
-     (cycle '("" "" "Fizz"))
-     (cycle '("" "" "" "" "Buzz"))
-     naturals)))
+       (map #(clojure.string/replace (str %1 %2) #"^$" (str %3))
+            (cycle '("" "" "Fizz"))
+            (cycle '("" "" "" "" "Buzz"))
+            naturals)))
 
 (clojure.string/join
  " "
@@ -47,3 +47,15 @@
               (cycle [% % "Fizz" % "Buzz" "Fizz" % % "Fizz" "Buzz" % "Fizz" % % "FizzBuzz"])
               (dec %))
             naturals)))
+
+(def fizz-buzz-seq
+  (map #(clojure.string/replace (str %1 %2) #"^$" (str %3))
+       (cycle '("" "" "Fizz"))
+       (cycle '("" "" "" "" "Buzz"))
+       naturals))
+
+(defn fizz-buzz [n]
+  (clojure.string/join " " (take n fizz-buzz-seq)))
+
+(fizz-buzz 100)
+
