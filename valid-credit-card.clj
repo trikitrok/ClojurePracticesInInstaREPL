@@ -3,18 +3,18 @@
 (str 1)
 (str \1)
 
-(defn parse-int [s]
+(defn- parse-int [s]
   (Integer. (re-find  #"\d+" (str s))))
 
 (parse-int "3")
 (parse-int \3)
 
-(defn to-digits [n]
+(defn- to-digits [n]
   (map parse-int (str n)))
 
 (to-digits 12)
 
-(def to-digits-rev
+(def ^:private to-digits-rev
   (comp reverse
         (partial to-digits)))
 
@@ -27,7 +27,7 @@
      itm))
  (to-digits-rev 123456))
 
-(defn double-second [coll]
+(defn- double-second [coll]
   (map-indexed
    #(if (zero? (mod (+ %1 1) 2))
       (* 2 %2)
@@ -36,15 +36,17 @@
 
 (double-second (to-digits-rev 123456))
 
-(def sum-digits
+(def ^:private sum-digits
   (partial reduce #(+ %1 (reduce + (to-digits %2)))))
 
 (sum-digits [6 66 666])
 
 (defn is-valid? [num-credit-card]
-  (zero? (mod (->>
-               num-credit-card
-               to-digits-rev
-               double-second
-               sum-digits)
-              10)))
+  (zero?
+   (mod
+    (->>
+     num-credit-card
+     to-digits-rev
+     double-second
+     sum-digits)
+    10)))
