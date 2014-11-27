@@ -10,20 +10,20 @@
 (with-open [rdr (reader "/home/trikitrok/Desktop/Quotes.txt")]
   (count (filter #(re-find #"\S" %) (line-seq rdr))))
 
-
-(defn non-blank? [line]
-  (if (re-find #"\S" line)
-    true
-    false))
-
+(re-find #"\S" "")
+(re-find #"\S" "a")
 
 (and nil true)
 (and true nil)
 (and true "hola")
 (and "hola" true)
 
-(non-black? "")
+(defn non-blank? [line]
+  (not= nil (re-find #"\S" line)))
+
+(non-blank? "")
 (non-blank? "hola")
+
 
 (defn non-git? [file]
   (not (.contains (.toString file) ".git")))
