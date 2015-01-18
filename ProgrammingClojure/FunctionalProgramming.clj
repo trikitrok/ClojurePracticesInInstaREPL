@@ -190,3 +190,90 @@
 (count-heads-pairs [:h :t :h :t :h])
 
 (clojure.repl/doc count-runs)
+
+; Mutual recursion
+;--------------------
+
+(declare my-odd? my-even?)
+
+(defn my-odd? [n]
+  (if (zero? n)
+    false
+    (my-even? (dec n))))
+
+(defn my-even? [n]
+  (if (zero? n)
+    true
+    (my-odd? (dec n))))
+
+(my-even? 1)
+(my-even? 2)
+(my-even? 3)
+
+(my-odd? 1)
+(my-odd? 2)
+(my-odd? 3)
+
+; (my-odd? (* 100 100 100)) ; java.lang.StackOverflowError: null
+
+; Converting to self-recursion
+;-----------------------------
+
+(defn parity [n]
+  (loop [n n par 0]
+    (if (zero? n)
+      par
+      (recur (dec n) (- 1 par)))))
+
+(map parity (range 10))
+
+(def my-even? (comp zero? parity))
+
+(my-even? 1)
+(my-even? 2)
+(my-even? 3)
+
+(my-even? (* 100 100 100))
+
+(def my-odd? (comp (partial = 1) parity))
+
+(my-odd? 1)
+(my-odd? 2)
+(my-odd? 3)
+
+(my-odd? (* 100 100 100))
+
+
+; Trampolining mutual recursion
+;---------------------------------
+
+(defn trampoline-fibo [n]
+  (let [fib (fn fib [f-2 f-1 current]
+              (let [f (+ f-2 f-1)]
+                (if (= n current)
+                  f
+                  #(fib f-1 f (inc current)))))]
+    (cond
+     (= n 0) 0
+     (= n 1) 1
+     :else (fib 0N 1 2))))
+
+(trampoline trampoline-fibo 9)
+
+(map (partial trampoline trampoline-fibo) (range 10))
+
+
+(defn my-odd? [n]
+  (if (zero? n)
+    false
+    #(my-even? (dec n))))
+
+(defn my-even? [n]
+  (if (zero? n)
+    true
+    #(my-odd? (dec n))))
+
+(trampoline my-odd? 10000000)
+(trampoline my-odd? 10000001)
+
+
