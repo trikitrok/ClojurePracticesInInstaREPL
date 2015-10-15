@@ -84,7 +84,8 @@
         runs (filter #(-> % first second) runs)
         ord-runs (sort-by #(* -1 (count %)) runs)
         best (first ord-runs)
-        ans (concat (-> best first first first vector) (map #(-> % first second) best))]
+        ans (concat (-> best first first first vector)
+                    (map #(-> % first second) best))]
   (if (nil? (first ans))
     '()
     ans)))
