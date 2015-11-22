@@ -132,7 +132,7 @@
   [:x :x :x]]
  :x)
 
-(defn who-wins? [board]
+(defn obtain-winner [board]
   (let [diagonals-idxs [[[0 0] [1 1] [2 2]] [[0 2] [1 1] [2 0]]]
         diagonal (partial map #(get-in board %))
         columns (partial apply (partial map (fn [a b c] [a b c])))
@@ -146,14 +146,14 @@
           (wins? board :o) :o
           :else nil)))
 
-(who-wins? [[:e :e :e]
+(obtain-winner [[:e :e :e]
             [:e :e :e]
             [:e :e :e]])
 
-(who-wins? [[:x :e :o]
+(obtain-winner [[:x :e :o]
             [:x :e :e]
             [:x :e :o]])
 
-(who-wins? [[:e :x :e]
+(obtain-winner [[:e :x :e]
             [:o :o :o]
             [:x :e :x]])
