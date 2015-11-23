@@ -26,3 +26,28 @@
 (= (symetric-difference #{:a :b :c} #{}) #{:a :b :c})
 (= (symetric-difference #{} #{4 5 6}) #{4 5 6})
 (= (symetric-difference #{[1 2] [2 3]} #{[2 3] [3 4]}) #{[1 2] [3 4]})
+
+
+;; 4Clojure 90
+(defn cartesian-product [set1 set2]
+  (into
+   #{}
+   (for [x set1 y set2]
+     [x y])))
+
+(cartesian-product #{"ace" "king" "queen"} #{"♠" "♥" "♦" "♣"})
+
+
+(= (cartesian-product
+    #{"ace" "king" "queen"} #{"♠" "♥" "♦" "♣"})
+    #{["ace"   "♠"] ["ace"   "♥"] ["ace"   "♦"] ["ace"   "♣"]
+      ["king"  "♠"] ["king"  "♥"] ["king"  "♦"] ["king"  "♣"]
+      ["queen" "♠"] ["queen" "♥"] ["queen" "♦"] ["queen" "♣"]})
+
+(= (cartesian-product
+    #{1 2 3} #{4 5})
+   #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
+
+(= 300 (count (cartesian-product
+               (into #{} (range 10))
+               (into #{} (range 30)))))
