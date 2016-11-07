@@ -29,7 +29,6 @@
 
 (my-flatten a)
 
-
 (fn my-flatten
   [coll]
   (loop [acc [] coll coll]
@@ -37,10 +36,24 @@
           (sequential? (first coll)) (recur (concat acc (my-flatten (first coll))) (rest coll))
           :else (recur (concat acc [(first coll)]) (rest coll)))))
 
-(fn flatten* [x]
+(defn my-flatten [x]
   (if (coll? x)
-    (mapcat flatten* x)
+    (mapcat my-flatten x)
     [x]))
+
+(my-flatten a)
+
+(defn my-flatten [acc coll]
+  (reduce
+    (fn [acc elem]
+      (if (sequential? elem)
+        (my-flatten acc elem)
+        (conj acc elem)))
+    acc
+    coll))
+
+(my-flatten [] a)
+
 
 (fn [s] (apply str (filter #(Character/isUpperCase %) s)))
 
@@ -188,5 +201,3 @@
 (rotate 2 [1 2 3 4 5])
 (rotate -2 [1 2 3 4 5])
 (rotate -4 [:a :b :c])
-
-
